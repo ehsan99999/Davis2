@@ -28,6 +28,7 @@ class App extends Component {
                 group :  layer[12],
                 visType :  layer[7],
                 colorScheme :  layer[10],
+                binsType :  'linear',
             });
         })
 

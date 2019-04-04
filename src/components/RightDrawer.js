@@ -2,24 +2,26 @@ import React, { Component } from 'react'
 import Drawer from '@material-ui/core/Drawer';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import { withStyles } from '@material-ui/core/styles';
 import TimerIcon from '@material-ui/icons/TimerOutlined';
 import LayersIcon from '@material-ui/icons/LayersOutlined';
 import SettingsIcon from '@material-ui/icons/SettingsOutlined';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
-import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
+import {Tabs ,Tab,RadioGroup,Radio,Card,
+    CardActions,CardContent,Button,Typography
+    ,Divider,FormControlLabel,FormControl,FormLabel,Switch,Grid,ListItem,List } from '@material-ui/core';
 
 
+const styles = theme => ({
+    root: {
+        display: 'flex',
+    },
+    formControl: {
+        margin: theme.spacing.unit * 3,
+    },
+    group: {
+        margin: `${theme.spacing.unit}px 0`,
+    },
+    });
 
 
 export class RightDrawer extends Component {
@@ -32,21 +34,18 @@ export class RightDrawer extends Component {
             bottom: false,
             right: true,
             tabValue : 1,
-            layer : {
+            layers : {
                 visible : false
             }
         };
     }
 
+
     componentWillReceiveProps(nextProps) {
         //update state when the props are updated
-        console.log(this.state)
-        if (nextProps.layers.visible !== this.state.layer.visible) {
-            let templayer = this.state.layer;
-            templayer.visible = nextProps.layers.visible
-          this.setState({ layer: templayer });
-        }
-        console.log(nextProps)
+        this.setState({ layers: nextProps.layers });
+        
+        console.log(this.state.layers)
       }
     
     toggleDrawer = (side, open) => () => {
@@ -60,24 +59,27 @@ export class RightDrawer extends Component {
     };
     handleVisibility = (event, value) => {
         //this.setState({ tabValue : value });
-        let templayer = this.state.layer;
+        let templayer = this.state.layers;
         templayer.visible = value
-        this.setState({ layer: templayer });
+        this.setState({ layers: templayer });
+
+    };
+    
+    handleBinsTypeChange = (event, value) => {
+        let templayer = this.state.layers;
+        templayer.binsType = value
+        this.setState({ layers: templayer });
 
         console.log(value)
     };
-    
-
 
 
     render() {
-        console.log(this.props.layers);
         console.log(this.state);
-        let layer = this.props.layers
-        let value= this.state.tabValue
-        let visible = this.state.layer.visible
-        console.log(this.state)
-        console.log("visible" , visible)
+        let layer = this.state.layers
+        let value = this.state.tabValue
+        console.log(layer.binsType);
+        
         let layerCard = (
             <Card className="layerCard">
             <CardContent>
@@ -91,19 +93,38 @@ export class RightDrawer extends Component {
             <Divider light />
 
             <CardActions>
-                <FormControlLabel 
-                    style = {{marginLeft : 0}}
-                    control={
-                        <Switch
-                        checked={visible}
-                        onChange={this.handleVisibility}
-                        value="checkedB"
-                        color="primary"
-                        
-                        />
-                    }
-                    label="Visible"
-                    />
+                <List style = {{marginLeft : 0}} dense={true}>
+                    <ListItem>
+                        <FormControlLabel 
+                            control={
+                                <Switch
+                                checked={layer.visible}
+                                onChange={this.handleVisibility}
+                                color="primary"
+                                />
+                            }
+                            label="Active / Deactive"
+                            />
+                    </ListItem>
+                    <ListItem>
+                        <FormControl component="fieldset" 
+                        // className={classes.formControl}
+                        >
+                            <RadioGroup
+                                name="binsType"
+                                row={true}
+                                //className={classes.group}
+                                value={layer.binsType}
+                                defaultValue="linear"
+                                checked={layer.binsType}
+                                onChange={this.handleBinsTypeChange}
+                            >
+                                <FormControlLabel value="linear" control={<Radio />} label="Linear" />
+                                <FormControlLabel  value="percentile" control={<Radio />} label="Percentile" />
+                            </RadioGroup>
+                        </FormControl>
+                    </ListItem>
+                </List>
             </CardActions>
             </Card>
 
@@ -115,7 +136,7 @@ export class RightDrawer extends Component {
             <Fab 
                 onClick={this.toggleDrawer('right', true)}
                 color="primary" aria-label="Add"
-                className={withStyles.FloatingActionButtons}>
+                >
                 <AddIcon />
             </Fab>
             <Drawer  anchor="right" open={this.state.right} onClose={this.toggleDrawer('right', false)}>
@@ -130,17 +151,16 @@ export class RightDrawer extends Component {
                             indicatorColor="primary"
                             textColor="primary"
                             onChange={this.handleChange}
-                            variant="fullWidth"
                         >
-                        <Tab icon={<TimerIcon />}  />
-                        <Tab icon={<LayersIcon />}   />
-                        <Tab icon={<SettingsIcon />}  />
-                        <Tab icon={<InfoIcon />}  />
+                        <Tab style={{ width: 20 }} icon={<TimerIcon />}  />
+                        <Tab style={{ width: 20 }} icon={<LayersIcon />}   />
+                        <Tab style={{ width: 20 }} icon={<SettingsIcon />}  />
+                        <Tab style={{ width: 20 }} icon={<InfoIcon />}  />
                         </Tabs>
-                        {value === 0 && <div>Tab One</div>}
-                        {value === 1 && <div>{layerCard}</div>}
-                        {value === 2 && <div>Tab Three</div>}
-                        {value === 3 && <div>Tab Four</div>}
+                        {value === 0 && <div className="RightDrawerTabs" >Tab One</div>}
+                        {value === 1 && <div className="RightDrawerTabs" >{layerCard}</div>}
+                        {value === 2 && <div className="RightDrawerTabs" >Tab Three</div>}
+                        {value === 3 && <div className="RightDrawerTabs" >Tab Four</div>}
                 </div>
             </Drawer>
 
