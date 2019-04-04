@@ -21,7 +21,7 @@ class App extends Component {
                 // Todo replace : desc :  layer[4],
                 desc :  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id purus convallis, varius metus pellentesque, bibendum ipsum. Integer bibendum leo justo, eget elementum metus viverra et. Nunc gravida scelerisque leo.",
                 fileType :  layer[5],
-                visible : (layer[6] == 1)? true : false,
+                visible : (layer[6] === 1)? true : false,
                 nlevels :  layer[8],
                 precision :  layer[9],
                 order :  layer[11],

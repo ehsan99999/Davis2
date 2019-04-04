@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import LayerCard from './LayerCard'
 import Drawer from '@material-ui/core/Drawer';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -7,21 +8,19 @@ import LayersIcon from '@material-ui/icons/LayersOutlined';
 import SettingsIcon from '@material-ui/icons/SettingsOutlined';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import {Tabs ,Tab,RadioGroup,Radio,Card,
-    CardActions,CardContent,Button,Typography
-    ,Divider,FormControlLabel,FormControl,FormLabel,Switch,Grid,ListItem,List } from '@material-ui/core';
+    CardActions,CardContent,Typography
+    ,Divider,FormControlLabel,FormControl,Switch,ListItem,List } from '@material-ui/core';
 
+import Slider from '@material-ui/lab/Slider';
 
-const styles = theme => ({
-    root: {
-        display: 'flex',
-    },
-    formControl: {
-        margin: theme.spacing.unit * 3,
-    },
-    group: {
-        margin: `${theme.spacing.unit}px 0`,
-    },
-    });
+const styles = {
+  root: {
+    width: 300,
+  },
+  slider: {
+    padding: '22px 0px',
+  },
+};
 
 
 export class RightDrawer extends Component {
@@ -57,78 +56,16 @@ export class RightDrawer extends Component {
     handleChange = (event, value) => {
         this.setState({ tabValue : value });
     };
-    handleVisibility = (event, value) => {
-        //this.setState({ tabValue : value });
-        let templayer = this.state.layers;
-        templayer.visible = value
-        this.setState({ layers: templayer });
 
-    };
-    
-    handleBinsTypeChange = (event, value) => {
-        let templayer = this.state.layers;
-        templayer.binsType = value
-        this.setState({ layers: templayer });
-
-        console.log(value)
-    };
 
 
     render() {
-        console.log(this.state);
+        console.log(this.state.layers.id);
         let layer = this.state.layers
         let value = this.state.tabValue
         console.log(layer.binsType);
-        
-        let layerCard = (
-            <Card className="layerCard">
-            <CardContent>
-                <Typography variant="h5" gutterBottom>
-                    {layer.visibleName}
-                </Typography>
-                <Typography variant="caption" gutterBottom>
-                    {layer.desc}
-                </Typography>
-            </CardContent>
-            <Divider light />
+ 
 
-            <CardActions>
-                <List style = {{marginLeft : 0}} dense={true}>
-                    <ListItem>
-                        <FormControlLabel 
-                            control={
-                                <Switch
-                                checked={layer.visible}
-                                onChange={this.handleVisibility}
-                                color="primary"
-                                />
-                            }
-                            label="Active / Deactive"
-                            />
-                    </ListItem>
-                    <ListItem>
-                        <FormControl component="fieldset" 
-                        // className={classes.formControl}
-                        >
-                            <RadioGroup
-                                name="binsType"
-                                row={true}
-                                //className={classes.group}
-                                value={layer.binsType}
-                                defaultValue="linear"
-                                checked={layer.binsType}
-                                onChange={this.handleBinsTypeChange}
-                            >
-                                <FormControlLabel value="linear" control={<Radio />} label="Linear" />
-                                <FormControlLabel  value="percentile" control={<Radio />} label="Percentile" />
-                            </RadioGroup>
-                        </FormControl>
-                    </ListItem>
-                </List>
-            </CardActions>
-            </Card>
-
-        )
 
 
         return (
@@ -158,7 +95,7 @@ export class RightDrawer extends Component {
                         <Tab style={{ width: 20 }} icon={<InfoIcon />}  />
                         </Tabs>
                         {value === 0 && <div className="RightDrawerTabs" >Tab One</div>}
-                        {value === 1 && <div className="RightDrawerTabs" >{layerCard}</div>}
+                        {value === 1 && <div className="RightDrawerTabs" ><LayerCard layer={layer} /></div>}
                         {value === 2 && <div className="RightDrawerTabs" >Tab Three</div>}
                         {value === 3 && <div className="RightDrawerTabs" >Tab Four</div>}
                 </div>
