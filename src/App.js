@@ -31,9 +31,7 @@ class App extends Component {
                 binsType :  'linear',
             });
         })
-
-        this.setState({layers : loadedLayers[0] });
-            
+        this.setState({layers : loadedLayers });
     })
 }
 

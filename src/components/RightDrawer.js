@@ -7,35 +7,19 @@ import TimerIcon from '@material-ui/icons/TimerOutlined';
 import LayersIcon from '@material-ui/icons/LayersOutlined';
 import SettingsIcon from '@material-ui/icons/SettingsOutlined';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
-import {Tabs ,Tab,RadioGroup,Radio,Card,
-    CardActions,CardContent,Typography
-    ,Divider,FormControlLabel,FormControl,Switch,ListItem,List } from '@material-ui/core';
-
-import Slider from '@material-ui/lab/Slider';
-
-const styles = {
-  root: {
-    width: 300,
-  },
-  slider: {
-    padding: '22px 0px',
-  },
-};
+import {Tabs ,Tab,ExpansionPanel,ExpansionPanelSummary,Typography,ExpansionPanelDetails} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
 export class RightDrawer extends Component {
     constructor(props) {
         super(props);
-        console.log(props)
         this.state = {
             top: false,
             left: false,
             bottom: false,
             right: true,
             tabValue : 1,
-            layers : {
-                visible : false
-            }
         };
     }
 
@@ -44,8 +28,7 @@ export class RightDrawer extends Component {
         //update state when the props are updated
         this.setState({ layers: nextProps.layers });
         
-        console.log(this.state.layers)
-      }
+    }
     
     toggleDrawer = (side, open) => () => {
         this.setState({
@@ -53,17 +36,74 @@ export class RightDrawer extends Component {
         });
       };
 
-    handleChange = (event, value) => {
+    ChangeTab = (event, value) => {
         this.setState({ tabValue : value });
     };
 
 
 
     render() {
-        console.log(this.state.layers.id);
-        let layer = this.state.layers
+        console.log("rightdrwr render")
+
+        let groupStr = "";
+        if( this.state.layers !== undefined){
+            //console.log(this.state.layers)
+            let groupsArray = [];
+            this.state.layers.map((layer)=>{
+                const { group }  = layer ;
+                if(groupsArray[group]){
+                    groupsArray[group].push(layer)
+                }else{
+                    groupsArray[group] = []
+                    groupsArray[group].push(layer)
+                }    
+                return "layer";
+            }) 
+    
+            //console.log(groupsArray)
+
+            groupStr = Object.keys(groupsArray).map(function(group, index) {
+                //console.log(groupsArray[group])
+                let layersStr = groupsArray[group].map(layer =>{
+                    return <LayerCard  key={layer.id} layer={layer} />
+                })
+                //console.log(layersStr)
+                return(
+                    <ExpansionPanel key={group} >
+                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography>{group}</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails style={{padding:5}} >
+                            {layersStr}
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                )
+                // layersStr = groupsArray[group].map(layer =>{
+
+                // });
+            });
+            console.log(groupStr)
+
+            // layersStr = groupsArray.map((group,m,n) =>{
+            //     console.log(group)
+            //     console.log(m)
+            //     console.log(n)
+            //     return( 
+            //         <ExpansionPanel key={group}>
+            //             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            //             <Typography>{group}</Typography>
+            //             </ExpansionPanelSummary>
+            //             <ExpansionPanelDetails style={{padding:5}}>
+            //                 {/* <LayerCard  layer={layer} />   */}
+            //             </ExpansionPanelDetails>
+            //         </ExpansionPanel>
+                
+            //     )
+            // })
+        }
+
+
         let value = this.state.tabValue
-        console.log(layer.binsType);
  
 
 
@@ -87,7 +127,7 @@ export class RightDrawer extends Component {
                             value={this.state.tabValue}
                             indicatorColor="primary"
                             textColor="primary"
-                            onChange={this.handleChange}
+                            onChange={this.ChangeTab}
                         >
                         <Tab style={{ width: 20 }} icon={<TimerIcon />}  />
                         <Tab style={{ width: 20 }} icon={<LayersIcon />}   />
@@ -95,7 +135,7 @@ export class RightDrawer extends Component {
                         <Tab style={{ width: 20 }} icon={<InfoIcon />}  />
                         </Tabs>
                         {value === 0 && <div className="RightDrawerTabs" >Tab One</div>}
-                        {value === 1 && <div className="RightDrawerTabs" ><LayerCard layer={layer} /></div>}
+                        {value === 1 && <div className="RightDrawerTabs" >{groupStr}</div>}
                         {value === 2 && <div className="RightDrawerTabs" >Tab Three</div>}
                         {value === 3 && <div className="RightDrawerTabs" >Tab Four</div>}
                 </div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Tabs ,Tab,RadioGroup,Radio,Card,
+import {RadioGroup,Radio,Card,
     CardActions,CardContent,Typography
     ,Divider,FormControlLabel,FormControl,Switch,ListItem,List } from '@material-ui/core';
 import Slider from '@material-ui/lab/Slider';
@@ -14,18 +14,7 @@ export class LayerCard extends Component {
 
     state = {
         hoverPalette:-1,
-        layer:{
-            colorScheme : 0,
-            nlevels:5,
-            visible:false
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        //update state when the props are updated
-        console.log(nextProps.layer)
-        this.setState({ layer: nextProps.layer });
-        
+        layer:this.props.layer
     }
 
 
@@ -78,8 +67,7 @@ export class LayerCard extends Component {
 
 
   render() {
-      let layer = this.state.layer
-      console.log(layer.visible)
+    let layer = this.state.layer
       
     let palettesList = colorPalette.map((palette , index) => {
         // make the colorbars that are hovered or selected to stand out
@@ -92,6 +80,7 @@ export class LayerCard extends Component {
                     style={style}
                     value={index}
                     key={index}
+                    alt={"palette name "+palette}
                     onClick={this.changeColorPalette}
                     onMouseEnter={this.imgMouseEnter}
                     onMouseLeave={this.imgMouseLeave}
