@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/ehsan99999/Davis2/precache-manifest.341064b3c7d1b7adc8afe5adc0631eb9.js"
+  "/ehsan99999/davis2/precache-manifest.419ff1ef7542184a8a6ecfeaf86e9a8f.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/ehsan99999/Davis2/index.html", {
+workbox.routing.registerNavigationRoute("/ehsan99999/davis2/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
