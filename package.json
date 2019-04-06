@@ -2,7 +2,7 @@
   "name": "davis2",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/ehsan99999/Davis2",
+  "homepage": "https://github.com/ehsan99999/davis2",
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
